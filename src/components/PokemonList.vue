@@ -2,7 +2,10 @@
   <div>
     <Search @update="getPokemons" />
     <Loader v-if="loading" />
-    <div v-if="!loading" class="w-full h-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div
+      v-if="!loading"
+      class="w-full h-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+    >
       <div
         :class="[`border-${getColor(pokemon.types[0].type.name)}-400`]"
         class="flex justify-between bg-white rounded-sm shadow-2xl relative border-b-4 w-full"
@@ -20,7 +23,17 @@
             />
           </div>
         </div>
-        <img class="w-5/12 py-4" :src="pokemon.img.front_default" alt="Not Image Found" />
+        <vue-load-image class="w-5/12">
+          <img
+            slot="image"
+            class="w-full py-4"
+            :src="pokemon.img.front_default"
+            alt="Not Image Found"
+          />
+          <img slot="preloader" src="./../assets/img/loader-1.gif" class="w-3/4 mx-auto" />
+          <div slot="error" class="text-center px-4">No se puede Cargar la Imagen</div>
+        </vue-load-image>
+
         <span
           class="text-sm absolute top-0 right-0 py-1 px-2 text-gray-400 font-bold"
         >#{{pokemon.id}}</span>
@@ -34,7 +47,7 @@
 import Type from "@/components/Type";
 import Loader from "@/components/Loader";
 import axios from "axios";
-
+import VueLoadImage from "vue-load-image";
 import Search from "@/components/Search";
 
 export default {
@@ -42,6 +55,7 @@ export default {
     Type,
     Loader,
     Search,
+    VueLoadImage,
   },
   data() {
     return {
